@@ -1,9 +1,66 @@
+# docker-compose.override.yml.example
+#
+# This is an example override file for VersionVault.
+# Copy this file to 'docker-compose.override.yml' and customize it for your environment.
+# The override file will not be committed to version control.
+
 services:
   versionvault:
+    # Optional: Override the build configuration
+    # build:
+    #   context: .
+    #   dockerfile: docker/custom.Dockerfile
+    #   args:
+    #     - BUILD_ENV=production
+
+    # Optional: Override the container name
+    # container_name: custom-versionvault-name
+
+    # Optional: Override the exposed port (default is 2080:80)
+    # ports:
+    #   - "8080:80"  # Change the host port from 2080 to 8080
+
+    # Override environment variables
     environment:
-      - WUD_API_URL=http://192.168.1.50:3000/api/containers
+      # The URL to your WUD (What's Up Docker) API
+      # Format: http://<wud-host>:<port>/api/containers
+      - WUD_API_URL=http://your-wud-server:3000/api/containers
+      
+      # Optional: Add additional environment variables if needed
+      # - DEBUG=true
+      # - LOG_LEVEL=info
+
+    # Optional: Override or add networks
+    # networks:
+    #   - proxy
+    #   - additional_network
+
+    # Optional: Override or add volumes
+    # volumes:
+    #   - nginx_logs:/var/log/nginx
+    #   - ./custom-config:/app/config
+
+    # Optional: Override restart policy
+    # restart: always
+
+    # Traefik labels for reverse proxy configuration
     labels:
-      - traefik.http.routers.versionvault.rule=Host(`versionvault.local.gezahome.cloud`)
-      - traefik.http.routers.versionvault-secure.rule=Host(`versionvault.local.gezahome.cloud`)
+      # Replace 'your-domain.example.com' with your actual domain
+      - traefik.http.routers.versionvault.rule=Host(`your-domain.example.com`)
+      - traefik.http.routers.versionvault-secure.rule=Host(`your-domain.example.com`)
+      
+      # Optional: Override TLS configuration
+      # - traefik.http.routers.versionvault-secure.tls.certresolver=letsencrypt
+      
+      # Optional: Add custom middlewares
+      # - traefik.http.middlewares.versionvault-auth.basicauth.users=user:$$apr1$$xxxxxxxx
+      # - traefik.http.routers.versionvault-secure.middlewares=versionvault-auth
 
+# Optional: Define additional volumes if needed
+# volumes:
+#   custom_volume:
 
+# Optional: Define additional networks if needed
+# networks:
+#   additional_network:
+#     external: true
