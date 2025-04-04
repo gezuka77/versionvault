@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        (function() {
+            document.documentElement.style.backgroundColor = localStorage.getItem('theme') === 'dark' 
+                || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                ? '#1a1a1a' 
+                : '#f5f5f5';
+            document.documentElement.style.color = localStorage.getItem('theme') === 'dark'
+                || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
+                ? '#e0e0e0'
+                : '#333';
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (savedTheme === null && prefersDark)) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <style>
+        html { visibility: hidden; }
+        html.ready { visibility: visible; }
+        body { 
+            opacity: 0; 
+            transition: opacity 0.3s ease;
+        }
+        html.ready body { 
+            opacity: 1; 
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
+    <title>VersionVault - Container Updates</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            requestAnimationFrame(() => {
+                document.documentElement.classList.add('ready');
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-title">
+                <img src="static/images/logo.png" alt="VersionVault" class="logo" width="32" height="32">
+                <div class="title-container">
+                    <h1>VersionVault</h1>
+                    <span class="subtitle">Container Updates Status</span>
+                </div>
+            </div>
+            <button id="darkModeToggle">
+                <span class="mode-icon">🌓</span>
+                <span class="mode-text">Dark Mode</span>
+            </button>
+        </div>
+    </header>
+    
+    <div class="container-grid" id="containerGrid">
+        <!-- Containers will be inserted here -->
+    </div>
+    
+    <footer>
+        <div id="updateTimeDisplay"></div>
+    </footer>
+    <script src="static/js/main.js"></script>
+</body>
+</html>
