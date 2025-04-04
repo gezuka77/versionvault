@@ -1,4 +1,3 @@
-```markdown
 # VersionVault
 
 ![Screenshot of VersionVault](image.png)
