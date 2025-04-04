@@ -1,5 +1,3 @@
-Here's the content formatted as a Markdown file. You can save this as `README.md` in your repository:
-
 ```markdown
 # VersionVault
 
@@ -24,28 +22,6 @@ VersionVault is a simple dashboard that provides a consolidated view of the upda
 -   Running instance of WUD (What's Up Docker) to provide the API.
 -   Docker and Docker Compose
 -   (Optional) Traefik for reverse proxy with HTTPS
-
-## Project Structure
-
-```
-versionvault/
-├── app/
-│   ├── static/
-│   │   ├── css/
-│   │   │   └── styles.css
-│   │   ├── images/
-│   │   │   ├── favicon.ico
-│   │   │   └── logo.png
-│   │   └── js/
-│   │       ├── main.js
-│   │       └── sw.js
-│   └── templates/
-│       └── index.html
-├── docker/
-│   ├── Dockerfile
-│   └── default.conf.template
-└── docker-compose.yml
-```
 
 ## Installation
 
