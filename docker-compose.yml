@@ -14,21 +14,39 @@ services:
       - nginx_logs:/var/log/nginx
     restart: unless-stopped
     labels:
+      # Traefik Configuration
+      # Basic Setup
       - traefik.enable=true
       - traefik.docker.network=proxy
+      
+      # HTTP Router Configuration
       - traefik.http.routers.versionvault.entrypoints=http
       - traefik.http.routers.versionvault.rule=Host(`your-domain.example.com`)
+      
+      # HTTPS Redirect
       - traefik.http.middlewares.versionvault-https-redirect.redirectscheme.scheme=https
       - traefik.http.routers.versionvault.middlewares=versionvault-https-redirect
+      
+      # HTTPS Router Configuration
       - traefik.http.routers.versionvault-secure.entrypoints=https
       - traefik.http.routers.versionvault-secure.rule=Host(`your-domain.example.com`)
       - traefik.http.routers.versionvault-secure.tls=true
       - traefik.http.routers.versionvault-secure.tls.certresolver=cloudflare
       - traefik.http.routers.versionvault-secure.service=versionvault
+      
+      # Service Configuration
       - traefik.http.services.versionvault.loadbalancer.server.port=80
+
 volumes:
   nginx_logs:
 
 networks:
   proxy:
+    # Option 1: For local development (remove external: true and use this)
+    # driver: bridge
+    
+    # Option 2: For production with existing network (current setup)
     external: true
+
+# Note: Before running this compose file, ensure the external network exists by running:
+# docker network create proxy
