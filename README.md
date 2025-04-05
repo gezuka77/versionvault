@@ -20,6 +20,7 @@ VersionVault is a simple dashboard that provides a consolidated view of the upda
 -   Running instance of WUD (What's Up Docker) to provide the API.
 -   Docker and Docker Compose
 -   (Optional) Traefik for reverse proxy with HTTPS
+-   Docker network `proxy` (if using Traefik)
 
 ## Installation
 
@@ -28,9 +29,15 @@ VersionVault is a simple dashboard that provides a consolidated view of the upda
    ```bash
    git clone https://github.com/gezuka77/versionvault.git
    cd versionvault
+   ```
 
+2. **Create required network** (if using Traefik):
 
-2. **Configure your environment**:
+   ```bash
+   docker network create proxy
+   ```
+
+3. **Configure your environment**:
 
    Edit the `docker-compose.yml` file to set the `WUD_API_URL` environment variable to point to your WUD API endpoint:
 
@@ -39,7 +46,7 @@ VersionVault is a simple dashboard that provides a consolidated view of the upda
      - WUD_API_URL=http://your-wud-server:3000/api/containers
    ```
 
-3. **Configure Traefik (Optional)**:
+4. **Configure Traefik (Optional)**:
 
    If you're using Traefik as a reverse proxy, the `docker-compose.yml` already includes the necessary labels. Update the domain name in the labels to match your environment:
 
@@ -49,19 +56,42 @@ VersionVault is a simple dashboard that provides a consolidated view of the upda
      - traefik.http.routers.versionvault-secure.rule=Host(`your-domain.example.com`)
    ```
 
-4. **Start the container**:
+5. **Start the container**:
 
    ```bash
    docker-compose up -d
    ```
 
-5. **Access the dashboard**:
+6. **Access the dashboard**:
 
    Open your browser and navigate to:
    - `http://localhost:2080` (if not using Traefik)
    - `https://your-domain.example.com` (if using Traefik with the configured domain)
 
 ## Configuration
+
+### Network Configuration
+
+The application supports two networking modes:
+
+1. **Simple Setup (without Traefik)**:
+   ```yaml
+   networks:
+     proxy:
+       driver: bridge
+   ```
+
+2. **Production Setup (with Traefik)**:
+   ```yaml
+   networks:
+     proxy:
+       external: true
+   ```
+
+   When using the production setup, create the network before starting the container:
+   ```bash
+   docker network create proxy
+   ```
 
 ### Environment Variables
 
@@ -116,6 +146,7 @@ Common issues include:
 - Incorrect WUD API URL
 - Network connectivity issues between VersionVault and WUD
 - Permission issues with volumes
+- Missing `proxy` network when using Traefik
 
 ### Cannot connect to WUD API
 
@@ -142,5 +173,4 @@ Since I'm not a programmer, contributions are welcome in the form of:
 
 ---
 
-**Last checked:** Apr 4, 2025, 09:11:32 PM
-```
+**Last checked:** Apr 5, 2025, 10:02:32 AM
