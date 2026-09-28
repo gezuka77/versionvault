@@ -6,6 +6,9 @@ services:
     container_name: versionvault
     ports:
       - "2080:80"
+    env_file:
+      - path: .env.wud
+        required: false
     environment:
       - WUD_API_URL=http://your-wud-server:3000/api/containers
     networks:

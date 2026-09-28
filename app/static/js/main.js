@@ -23,6 +23,10 @@ async function fetchContainers() {
             }
         });
         
+        if (response.status === 401 || response.status === 403) {
+            throw new Error("WUD authentication failed. Configure a valid read-only WUD_API_TOKEN on the VersionVault server and recreate the container.");
+        }
+
         if (!response.ok) {
             throw new Error(
                 `Server returned ${response.status}: ${response.statusText}`
@@ -50,7 +54,7 @@ function showError(error) {
     const grid = document.getElementById("containerGrid");
     grid.innerHTML = `
         <div class="error-card">
-            Error fetching data from WUD API: ${error.message}
+            Error fetching data from WUD API: ${escapeHtml(error.message)}
             <br>
             <small>Please check if the WUD service is running and accessible.</small>
         </div>

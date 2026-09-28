@@ -1,5 +1,8 @@
 FROM nginx:alpine
 
+# Empty by default for older WUD installations; supplied privately for WUD 9.
+ENV WUD_API_TOKEN=""
+
 # Remove default nginx static assets
 RUN rm -rf /usr/share/nginx/html/*
 

@@ -97,7 +97,28 @@ The application supports two networking modes:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `WUD_API_TOKEN` | WUD personal API token, required for WUD 9 | Empty |
 | `WUD_API_URL` | URL of your WUD API endpoint | `http://192.168.1.50:3000/api/containers` |
+
+### WUD 9 authentication
+
+WUD 9 requires authentication. Create a dedicated read-only WUD user and a personal API token with the `read` scope. OIDC remains available for browser logins; VersionVault uses the API token for its server-to-server requests.
+
+Create `.env.wud` beside the Compose file, restrict it to mode `600`, and set:
+
+```dotenv
+WUD_API_TOKEN=your_wud_api_token
+```
+
+This file is ignored by Git and excluded from the Docker build context. Nginx adds the bearer token to upstream requests; it is never embedded in frontend JavaScript. VersionVault only proxies reads to `/api/containers`.
+
+After changing the key or application files, run:
+
+```bash
+docker compose up -d --build --no-deps versionvault
+```
+
+Keep `.env.wud` in private backups. A 401 or 403 from WUD means the token is missing, invalid, or lacks access.
 
 ### Ports
 
